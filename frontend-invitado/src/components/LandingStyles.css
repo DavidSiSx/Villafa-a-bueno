@@ -1,0 +1,297 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;700&display=swap");
+
+:root {
+  --primary-color: #e5a4cb;
+  --secondary-color: #f8e6f0;
+  --accent-color: #d4af37;
+  --text-color: #4a4a4a;
+  --light-text: #6e6e6e;
+  --background-color: #fdf7fa;
+  --card-background: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--background-color);
+  background-image: radial-gradient(circle at 10% 20%, rgba(229, 164, 203, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 30%, rgba(229, 164, 203, 0.07) 0%, transparent 20%),
+    radial-gradient(circle at 30% 70%, rgba(229, 164, 203, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 80% 80%, rgba(229, 164, 203, 0.07) 0%, transparent 20%);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.invitation-container {
+  width: 100%;
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.invitation-container.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.invitation-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  padding: 40px 30px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(229, 164, 203, 0.3);
+}
+
+/* Decorative elements */
+.card-decoration {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  opacity: 0.1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23e5a4cb' d='M50,0 C60,30 70,40 100,50 C70,60 60,70 50,100 C40,70 30,60 0,50 C30,40 40,30 50,0 Z'/%3E%3C/svg%3E");
+}
+
+.top-left {
+  top: -20px;
+  left: -20px;
+  transform: rotate(-15deg);
+}
+
+.top-right {
+  top: -20px;
+  right: -20px;
+  transform: rotate(15deg);
+}
+
+.bottom-left {
+  bottom: -20px;
+  left: -20px;
+  transform: rotate(-45deg);
+}
+
+.bottom-right {
+  bottom: -20px;
+  right: -20px;
+  transform: rotate(45deg);
+}
+
+.invitation-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.invitation-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.ornament {
+  height: 2px;
+  background-color: var(--accent-color);
+  width: 40px;
+  position: relative;
+}
+
+.ornament.left {
+  margin-right: 15px;
+}
+
+.ornament.right {
+  margin-left: 15px;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  top: -2px;
+}
+
+.ornament.left::before {
+  left: 0;
+}
+
+.ornament.left::after {
+  right: 0;
+}
+
+.ornament.right::before {
+  left: 0;
+}
+
+.ornament.right::after {
+  right: 0;
+}
+
+.pre-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--light-text);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.main-title {
+  font-family: "Great Vibes", cursive;
+  font-size: 48px;
+  color: var(--primary-color);
+  margin: 10px 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.name-container {
+  margin: 15px 0 25px;
+}
+
+.name {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-color);
+  position: relative;
+  display: inline-block;
+}
+
+.name::before,
+.name::after {
+  content: "✦";
+  font-size: 14px;
+  color: var(--accent-color);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.name::before {
+  left: -25px;
+}
+
+.name::after {
+  right: -25px;
+}
+
+.divider {
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+  margin: 20px auto 25px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.detail-icon {
+  font-size: 18px;
+}
+
+.detail-text {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.invitation-message {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--light-text);
+  margin: 25px 0;
+  padding: 0 15px;
+}
+
+.confirm-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 30px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(229, 164, 203, 0.3);
+  margin: 20px 0;
+}
+
+.confirm-button:hover {
+  background-color: #d68ab6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(229, 164, 203, 0.4);
+}
+
+.confirm-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(229, 164, 203, 0.3);
+}
+
+.dress-code {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--light-text);
+  margin-top: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .invitation-card {
+    padding: 30px 20px;
+  }
+
+  .main-title {
+    font-size: 38px;
+  }
+
+  .name {
+    font-size: 26px;
+  }
+
+  .detail-text {
+    font-size: 14px;
+  }
+
+  .invitation-message {
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .card-decoration {
+    width: 80px;
+    height: 80px;
+  }
+}
+

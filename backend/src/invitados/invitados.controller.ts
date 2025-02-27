@@ -1,59 +1,79 @@
-import { Controller, Get, Post, Put, Delete, Query, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Query,
+  Param,
+  Body,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { InvitadosService } from './invitados.service';
+import { CreateInvitadoDto } from '../dto/create-invitado.dto';
 import { Invitado } from '../entities/invitado.entity';
-import { InvitadoExtra } from '../entities/invitado-extra.entity';
-import { ConfirmInvitadoDto } from '../dto/confirm-invitado.dto';
-import { CreateInvitadoExtraDto } from '../dto/create-invitado-extra.dto';
-import { UpdateInvitadoExtraDto } from '../dto/update-invitado-extra.dto';
 
 @Controller('invitados')
 export class InvitadosController {
   constructor(private readonly invitadosService: InvitadosService) {}
 
-  // GET /invitados?nombre=opcional
-  // Si se omite "nombre", devuelve todos los invitados
+  /**
+   * GET /invitados?nombre=algo
+   * Obtiene todos los invitados o filtra por nombre (coincidencia parcial).
+   */
   @Get()
   async getInvitados(@Query('nombre') nombre?: string): Promise<Invitado[]> {
-    return this.invitadosService.findInvitados(nombre);
+    return this.invitadosService.findByNameOrAll(nombre || '');
   }
 
-  // GET /invitados/:id
+  /**
+   * GET /invitados/:id
+   * Retorna un invitado específico por ID.
+   */
   @Get(':id')
-  async getInvitado(@Param('id') id: string): Promise<Invitado> {
-    return this.invitadosService.findById(+id);
+  async getInvitado(@Param('id', ParseIntPipe) id: number): Promise<Invitado> {
+    return this.invitadosService.findOne(id);
   }
 
-  // POST /invitados/:id/confirm
+  /**
+   * POST /invitados
+   * Crea un nuevo invitado con los datos del DTO.
+   */
+  @Post()
+  async addInvitado(@Body() createInvitadoDto: CreateInvitadoDto): Promise<Invitado> {
+    return this.invitadosService.create(createInvitadoDto);
+  }
+
+  /**
+   * POST /invitados/:id/confirm
+   * Confirma la asistencia de un invitado y asigna acompañantes.
+   */
   @Post(':id/confirm')
   async confirmInvitado(
-    @Param('id') id: string,
-    @Body() confirmDto: ConfirmInvitadoDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { codigo: string; extras: string[] },
+  ) {
+    return this.invitadosService.confirmInvitado(id, body.codigo, body.extras);
+  }
+
+  /**
+   * PUT /invitados/:id
+   * Actualiza los datos de un invitado (perfil editable).
+   */
+  @Put(':id')
+  async updateInvitado(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateData: Partial<Invitado>,
   ): Promise<Invitado> {
-    return this.invitadosService.confirmInvitado(+id, confirmDto);
+    return this.invitadosService.updateInvitado(id, updateData);
   }
 
-  // POST /invitados/:id/extra
-  @Post(':id/extra')
-  async addExtra(
-    @Param('id') id: string,
-    @Body() createExtraDto: CreateInvitadoExtraDto,
-  ): Promise<InvitadoExtra> {
-    return this.invitadosService.addExtra(+id, createExtraDto);
-  }
-
-  // PUT /invitados/extra/:extraId
-  @Put('extra/:extraId')
-  async updateExtra(
-    @Param('extraId') extraId: string,
-    @Body() updateExtraDto: UpdateInvitadoExtraDto,
-  ): Promise<InvitadoExtra> {
-    return this.invitadosService.updateExtra(+extraId, updateExtraDto);
-  }
-
-  // DELETE /invitados/extra/:extraId
-  @Delete('extra/:extraId')
-  async deleteExtra(@Param('extraId') extraId: string): Promise<{ message: string }> {
-    await this.invitadosService.deleteExtra(+extraId);
-    return { message: 'Invitado extra eliminado correctamente' };
+  /**
+   * DELETE /invitados/:id
+   * Elimina un invitado por su ID.
+   */
+  @Delete(':id')
+  async deleteInvitado(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.invitadosService.deleteInvitado(id);
   }
 }

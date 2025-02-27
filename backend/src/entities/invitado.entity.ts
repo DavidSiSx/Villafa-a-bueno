@@ -1,7 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { InvitadoExtra } from './invitado-extra.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity("invitado")
 export class Invitado {
   @PrimaryGeneratedColumn()
   id: number;
@@ -9,13 +8,18 @@ export class Invitado {
   @Column()
   nombre: string;
 
+  @Column({ nullable: true })
+  numero: string;
+
+  @Column({ default: 1 })
+  numPersonas: number;
+
+  @Column({ default: false })
+  confirmado: boolean;
+
   @Column()
-  telefono: string;
+  codigo: string;
 
-  // Este campo representa el número de personas confirmadas o invitaciones extras disponibles
-  @Column({ type: 'int', default: 0 })
-  num_personas: number;
-
-  @OneToMany(() => InvitadoExtra, extra => extra.invitado, { cascade: true })
-  extras: InvitadoExtra[];
+  @Column("simple-array", { nullable: true })
+  acompanantes: string[];
 }

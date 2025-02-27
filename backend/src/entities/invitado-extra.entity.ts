@@ -9,6 +9,5 @@ export class InvitadoExtra {
   @Column()
   nombre: string;
 
-  @ManyToOne(() => Invitado, invitado => invitado.extras, { onDelete: 'CASCADE' })
-  invitado: Invitado;
+
 }
